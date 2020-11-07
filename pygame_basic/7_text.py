@@ -45,6 +45,20 @@ enemy_height= enemy_size[1]
 enemy_x_pos = (screen_width /2) - (enemy_width /2) # on the half of the screen
 enemy_y_pos = (screen_height /2) - (enemy_height /2)
 
+
+# text
+# font 
+game_font = pygame.font.Font(None , 40) #default 
+
+# total play time
+total_time = 10
+
+# start time
+start_ticks = pygame.time.get_ticks() # start
+
+
+
+
 # event roop 
 running = True # is game on going?
 while running:
@@ -107,8 +121,24 @@ while running:
     screen.blit(enemy,(enemy_x_pos,enemy_y_pos))
 
 
+    # timer
+    elapsed_time = (pygame.time.get_ticks()- start_ticks) / 1000  # ms/1000 = per second
+
+    timer = game_font.render(str(int(total_time - elapsed_time)), True, (255,255,255))
+     # letter, True, font color 
+    screen.blit(timer, (50,10))
+    # time limit
+    if total_time -elapsed_time <= 0 :
+        print("time out")
+        running = False
+
+
     #screen.fill((134,229,127)) #with rgb 
     pygame.display.update() #keep the img while roop 
+
+#delay closing 
+pygame.time.delay(2000) # 2 seconds delay
+
 # close
 pygame.quit()
 

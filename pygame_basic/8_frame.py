@@ -1,5 +1,5 @@
 import pygame
-
+####################################must to do ######################################
 pygame.init() # must to do 
 
 # setting for screen size
@@ -7,10 +7,16 @@ screen_width = 480
 screen_height= 640
 screen = pygame.display.set_mode((screen_width,screen_height)) #double
 
-
 # set screen title
 pygame.display.set_caption("play with me")
 
+# FPS
+clock = pygame.time.Clock()
+
+####################################must to do ########################################
+
+
+################## 1 reset (background, character, font, speed)
 # bring the background img
 background =pygame.image.load("C:/Users/YURI\Desktop/pythonworkspace/pygame_basic/background.jpg")
 
@@ -28,12 +34,8 @@ character_y_pos = screen_height -character_height #on the bottom of screen
 to_x =0
 to_y =0
 
-# FPS
-clock = pygame.time.Clock()
-
 #speed
 character_speed = 0.6
-
 
 # Enemy
 enemy = pygame.image.load("C:/Users/YURI\Desktop/pythonworkspace/pygame_basic/enemy.jpg")
@@ -45,11 +47,25 @@ enemy_height= enemy_size[1]
 enemy_x_pos = (screen_width /2) - (enemy_width /2) # on the half of the screen
 enemy_y_pos = (screen_height /2) - (enemy_height /2)
 
+
+# text
+# font 
+game_font = pygame.font.Font(None , 40) #default 
+
+# total play time
+total_time = 10
+
+# start time
+start_ticks = pygame.time.get_ticks() # start
+
+
 # event roop 
 running = True # is game on going?
 while running:
     dt = clock.tick(60) # set for FPS 
+    
 
+    ##################### 2 event 
     for event in pygame.event.get(): #must which event was happened?
         if event.type == pygame.QUIT: # as if push x button 
            running = False
@@ -84,7 +100,7 @@ while running:
         character_y_pos = screen_height- character_height  
 
 
-    # collision
+    # rect info update as collision
     character_rect = character.get_rect()
     character_rect.left = character_x_pos
     character_rect.top = character_y_pos
@@ -107,8 +123,24 @@ while running:
     screen.blit(enemy,(enemy_x_pos,enemy_y_pos))
 
 
+    # timer
+    elapsed_time = (pygame.time.get_ticks()- start_ticks) / 1000  # ms/1000 = per second
+
+    timer = game_font.render(str(int(total_time - elapsed_time)), True, (255,255,255))
+     # letter, True, font color 
+    screen.blit(timer, (50,10))
+    # time limit
+    if total_time -elapsed_time <= 0 :
+        print("time out")
+        running = False
+
+
     #screen.fill((134,229,127)) #with rgb 
     pygame.display.update() #keep the img while roop 
+
+#delay closing 
+pygame.time.delay(2000) # 2 seconds delay
+
 # close
 pygame.quit()
 
